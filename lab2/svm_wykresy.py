@@ -49,6 +49,7 @@ def draw_data(X):
     plt.show()
 
 
+
 def classify(X):
     Xs = []
     ys = []
@@ -57,11 +58,12 @@ def classify(X):
         if c == 1 or c == 0:
             Xs.append([x,y])
             ys.append(c)
-        clf = svm.SVC()
-        clf.fit(Xs,ys)
-        for i in range(len(X)):
-            if X[i][2] == -1:
-                X[i][2] = clf.predict([X[i][0],X[i][1]])
+    clf = svm.SVC()
+    clf.fit(Xs,ys)
+    for i in range(len(X)):
+        if X[i][2] == -1:
+            X[i][2] = clf.predict([X[i][0],X[i][1]])
     return X
+
 
 draw_data(classify(load_data('treningowy')))
