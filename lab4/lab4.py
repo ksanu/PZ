@@ -5,6 +5,7 @@ from sklearn import svm
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 import re
+import math
 cachedStopWords = stopwords.words("english")
 min_length = 3
 
@@ -120,7 +121,26 @@ class document:
             vector[inverse_vocabulary[word]] = 1
         return vector
 
-
+class tf_idf:
+    def __init__(self):
+        self.D = 0.0
+        self.df = {}
+    def add_document(self, document):
+        self.D += 1.0
+        for token in set(document):
+            self.df[token] += 1.0
+    def idf(self, token):
+        return math.log(self.D/self.df[token])
+    def tf(self, token, document):
+        liczba_wystapien_tokenu = 0.0
+        liczba_tokenow = 0.0
+        for t in document:
+            liczba_tokenow += 1.0
+            if t == token:
+                liczba_wystapien_tokenu += 1.0
+        return liczba_wystapien_tokenu/liczba_tokenow
+    def tfidf(self, token, document):
+        return self.tf(token,document) * self.idf(token)
 klasyfikator = svm.SVC(kernel="linear")
 crp = corpus("C:\\Users\\s0146074\\Desktop\\txt_sentoken\\pos", "C:\\Users\\s0146074\\Desktop\\txt_sentoken\\neg")
 #print(crp.documents[0].get_feature_values(crp.get_representer()))
